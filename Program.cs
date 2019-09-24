@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +19,7 @@ namespace Lb1
         private string m_fullName;
         private int m_salary;
         private string m_district;
-        Dictionary<Tuple<string,Position>, DateTime> m_career;
+        List<Tuple<string,DateTime,Position>> m_career;
         private static bool IsNumberContains(string input)
         {
             foreach (char c in input)
@@ -51,7 +51,7 @@ namespace Lb1
             if (district == "") district = m_district;
             validateDistrict(district);
             m_position = position;
-            m_career.Add(new Tuple<string,Position>(district,position), date);
+            m_career.Add(new Tuple<string, DateTime, Position>(district,date,position));
             switch(position)
             {
                 case Position.Director:
@@ -102,12 +102,27 @@ namespace Lb1
             validateDistrict(district);
             //TODO: catch exceptions
         }
+        public Tuple<DateTime, string> findByPosition(Position position)
+        {
+            foreach(var i in m_career)
+            {
+                if (i.Item3 == position) return new Tuple<DateTime,string>(i.Item2, i.Item1);
+            }
+            return null;
+        }
+
+        public Tuple<DateTime, Position> findByDistrict(string district)
+        {
+            foreach (var i in m_career)
+            {
+                if (i.Item1 == district) return new Tuple<DateTime, Position>(i.Item2, i.Item3);
+            }
+            return null;
+        }
     }
+
     class Program
     {
-        static void Main(string[] args)
-        {
-        }
     }
 }
 //todo: toString conversion
